@@ -1,0 +1,90 @@
+[
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.dubbindo.site&sz=256",
+        "fileHash": "sha256-727b364bf34fa0b5e0fd42e522db001d2ead2f6bf8b6f3e4d85db51515299b89",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/JaTri19/cobacs3",
+        "fileSize": 11814,
+        "status": 1,
+        "language": "id",
+        "authors": [
+            "Hexated",
+            "TeKuma25"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie",
+            "Cartoon",
+            "Anime"
+        ],
+        "version": 2,
+        "internalName": "Dubbindo",
+        "url": "https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Dubbindo.cs3",
+        "name": "Dubbindo"
+    },
+    {
+        "fileHash": "sha256-f29fc6f7c7811d6f37cf47a9ae9b9676e6b97078c786c8fe692103dadcaf5d99",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/JaTri19/cobacs3",
+        "fileSize": 24786,
+        "status": 1,
+        "language": "id",
+        "authors": [
+            "jatri19"
+        ],
+        "tvTypes": [
+            "AnimeMovie",
+            "Anime",
+            "OVA"
+        ],
+        "version": 1,
+        "internalName": "Oploverz",
+        "description": "Oploverz - Anime Sub Indo",
+        "url": "https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Oploverz.cs3",
+        "name": "Oploverz"
+    },
+    {
+        "fileHash": "sha256-d86327fb2c09d3f77281ad8b2d3429335820c3b9e6750110cfbe8c212cefd424",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/JaTri19/cobacs3",
+        "fileSize": 12246,
+        "status": 1,
+        "language": "id",
+        "authors": [
+            "Antigravity"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie",
+            "Anime",
+            "AsianDrama"
+        ],
+        "version": 1,
+        "internalName": "Oppadrama",
+        "description": "Oppadrama - Nonton Drama Korea, Film & Anime Sub Indo",
+        "url": "https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Oppadrama.cs3",
+        "name": "Oppadrama"
+    },
+    {
+        "fileHash": "sha256-77fb0771e485515afff4befcc5a01a289036043908e0fcde10b67de6ca581f12",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/JaTri19/cobacs3",
+        "fileSize": 27826,
+        "status": 1,
+        "language": "id",
+        "authors": [
+            "JaTri19"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie",
+            "Anime",
+            "AsianDrama"
+        ],
+        "version": 1,
+        "internalName": "Sflix",
+        "description": "Sflix - Movie & Series subtitle indonesia",
+        "url": "https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Sflix.cs3",
+        "name": "Sflix"
+    }
+]
