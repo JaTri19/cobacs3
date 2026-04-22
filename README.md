@@ -7,7 +7,7 @@ Kumpulan ekstensi untuk CloudStream (Sflix, Dubbindo, dan Oppadrama).
 ### 1. Install via Tautan Langsung (Auto Add Repo)
 Jika aplikasi CloudStream dan HP Anda mendukung tautan langsung ber-token, klik tautan di bawah ini dari browser HP Anda:
 
-[📲 **KLIK DI SINI UNTUK INSTALL KE CLOUDSTREAM**](cloudstreamrepo://raw.githubusercontent.com/JaTri19/cobacs3/builds/repo.json)
+[📲 KLIK DI SINI UNTUK INSTALL KE CLOUDSTREAM](cloudstreamrepo://raw.githubusercontent.com/JaTri19/cobacs3/builds/repo.json)
 
 *(Catatan: GitHub sering kali memblokir link aplikasi seperti ini jika tidak di-copy secara manual, jika gagal ditekan, salin link berikut: `cloudstreamrepo://raw.githubusercontent.com/JaTri19/cobacs3/builds/repo.json` dan tempelkan di browser HP Anda).*
 
