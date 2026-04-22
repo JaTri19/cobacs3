@@ -47,6 +47,7 @@ jobs:
           ./gradlew make makePluginsJson
           cp **/build/*.cs3 $GITHUB_WORKSPACE/builds
           cp build/plugins.json $GITHUB_WORKSPACE/builds
+          echo '{"name":"cobacs3","description":"My Private Extensions","manifestVersion":1,"pluginLists":["https://raw.githubusercontent.com/JaTri19/cobacs3/builds/plugins.json"]}' > $GITHUB_WORKSPACE/builds/repo.json
 
       - name: Push builds
         run: |
