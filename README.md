@@ -1,58 +1,23 @@
-**⚠️ This is currently under development, dont use it yet if you're not comfortable with constantly merging new changes**
+# CobaCS3 - Ekstensi Pribadi CloudStream
 
-# `Cloudstream3 Plugin Repo Template`
+Kumpulan ekstensi untuk CloudStream (Sflix, Dubbindo, dan Oppadrama).
 
-Template for a [Cloudstream3](https://github.com/recloudstream) plugin repo
+## Cara Install (Pilih Salah Satu)
 
-**⚠️ Make sure you check "Include all branches" when using this template**
+### 1. Install via Tautan Langsung (Auto Add Repo)
+Jika aplikasi CloudStream dan HP Anda mendukung tautan langsung ber-token, klik tautan di bawah ini dari browser HP Anda:
 
- 
-## Getting started with writing your first plugin
+[📲 **KLIK DI SINI UNTUK INSTALL KE CLOUDSTREAM**](cloudstreamrepo://raw.githubusercontent.com/JaTri19/cobacs3/builds/repo.json)
 
-This template includes 1 example plugin.
+*(Catatan: GitHub sering kali memblokir link aplikasi seperti ini jika tidak di-copy secara manual, jika gagal ditekan, salin link berikut: `cloudstreamrepo://raw.githubusercontent.com/JaTri19/cobacs3/builds/repo.json` dan tempelkan di browser HP Anda).*
 
-1. Open the root build.gradle.kts, read the comments and replace all the placeholders
-2. Familiarize yourself with the project structure. Most files are commented
-3. Build or deploy your first plugin using:
-   - Windows: `.\gradlew.bat ExampleProvider:make` or `.\gradlew.bat ExampleProvider:deployWithAdb`
-   - Linux & Mac: `./gradlew ExampleProvider:make` or `./gradlew ExampleProvider:deployWithAdb`
+---
 
+### 2. Install Manual per Ekstensi
+Jika tautan Repo di atas diblokir karena menggunakan Token Private, Anda bisa mengunduh file ekstensinya satu-per-satu lewat tautan di bawah (pastikan Anda sudah login akun GitHub di browser HP):
 
-## Granting All Files Access on Newer Android Devices
+* 📥 [Install Sflix](https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Sflix.cs3)
+* 📥 [Install Dubbindo](https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Dubbindo.cs3)
+* 📥 [Install Oppadrama](https://raw.githubusercontent.com/JaTri19/cobacs3/builds/Oppadrama.cs3)
 
-For local plugin testing, you need to grant the app "All Files Access" on newer Android devices (Android 11 and above). Here’s how to do it:
-
-### Using ADB
-
-* `adb shell appops set --uid PACKAGE_NAME MANAGE_EXTERNAL_STORAGE allow`
-* Replace `PACKAGE_NAME` with the name of the package for the Cloudstream3 version you are using:
-   - debug: `com.lagradost.cloudstream3.prerelease.debug`
-   - prerelease: `com.lagradost.cloudstream3.prerelease`
-   - stable: `com.lagradost.cloudstream3`
-
-### Manually
-
-1. **Open Settings**: Go to your device’s Settings menu.
-
-2. **Navigate to Special Access**:
-   - Tap on "Apps & notifications" or "Apps".
-   - Select "Special app access" or "Special access".
-
-3. **Select All Files Access**:
-   - Tap on "All files access".
-   - It may be under the three vertical dots menu towards the top of the screen.
-
-4. **Grant Access to the App**: Find the app in the list and tap on it to toggle it, if it is not already enabled.
-
-6. **Restart the App**: Close and reopen the app to apply the changes.
-
-
-## License
-
-Everything in this repo is released into the public domain. You may use it however you want with no conditions whatsoever
-
-
-## Attribution
-
-This template as well as the gradle plugin and the whole plugin system is **heavily** based on [Aliucord](https://github.com/Aliucord).
-*Go use it, it's a great mobile discord client mod!*
+*(Setelah file ter-download, cukup ketuk filenya di menu Notifikasi / File Manager Anda untuk memasukkannya secara otomatis ke CloudStream).*
