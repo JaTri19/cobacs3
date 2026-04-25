@@ -21,6 +21,14 @@ class Sflix : MainAPI() {
     override var lang = "id"
     override val supportedTypes = setOf(TvType.Movie, TvType.TvSeries, TvType.Anime, TvType.AsianDrama)
 
+    private val cfHeaders = mapOf(
+        "User-Agent" to "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+        "Accept" to "application/json, text/plain, */*",
+        "Accept-Language" to "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Origin" to "https://sflix.film",
+        "Referer" to "https://sflix.film/",
+    )
+
     override val mainPage = mainPageOf(
         "872031290915189720" to "Trending",
 		"6528093688173053896" to "Indonesian Movie",
@@ -44,7 +52,7 @@ class Sflix : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val url = "$mainUrl/wefeed-h5-bff/web/ranking-list/content?id=${request.data}&page=$page&perPage=12"
-        val home = app.get(url).parsedSafe<Media>()?.data?.subjectList?.map { it.toSearchResponse(this) }
+        val home = app.get(url, headers = cfHeaders).parsedSafe<Media>()?.data?.subjectList?.map { it.toSearchResponse(this) }
             ?: throw ErrorLoadingException("No Data Found")
         return newHomePageResponse(request.name, home)
     }
@@ -54,13 +62,13 @@ class Sflix : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val body = mapOf("keyword" to query, "page" to "1", "perPage" to "0", "subjectType" to "0")
             .toJson().toRequestBody(RequestBodyTypes.JSON.toMediaTypeOrNull())
-        return app.post("$mainUrl/wefeed-h5-bff/web/subject/search", requestBody = body)
+        return app.post("$mainUrl/wefeed-h5-bff/web/subject/search", requestBody = body, headers = cfHeaders)
             .parsedSafe<Media>()?.data?.items?.map { it.toSearchResponse(this) } ?: throw ErrorLoadingException()
     }
 
     override suspend fun load(url: String): LoadResponse {
         val id = url.substringAfterLast("/")
-        val doc = app.get("$mainUrl/wefeed-h5-bff/web/subject/detail?subjectId=$id").parsedSafe<MediaDetail>()?.data
+        val doc = app.get("$mainUrl/wefeed-h5-bff/web/subject/detail?subjectId=$id", headers = cfHeaders).parsedSafe<MediaDetail>()?.data
         val subject = doc?.subject
         val title = subject?.title ?: ""
         val poster = subject?.cover?.url
@@ -73,7 +81,7 @@ class Sflix : MainAPI() {
         val actors = doc?.stars?.mapNotNull { cast ->
             ActorData(Actor(cast.name ?: return@mapNotNull null, cast.avatarUrl), roleString = cast.character)
         }?.distinctBy { it.actor }
-        val recommendations = app.get("$mainUrl/wefeed-h5-bff/web/subject/detail-rec?subjectId=$id&page=1&perPage=12")
+        val recommendations = app.get("$mainUrl/wefeed-h5-bff/web/subject/detail-rec?subjectId=$id&page=1&perPage=12", headers = cfHeaders)
             .parsedSafe<Media>()?.data?.items?.map { it.toSearchResponse(this) }
 
         return if (tvType == TvType.TvSeries) {
@@ -120,7 +128,8 @@ class Sflix : MainAPI() {
 		try {
 			val referer = "$apiUrl/spa/videoPlayPage/movies/${media.detailPath}?id=${media.id}&type=/movie/detail&lang=en"
 			val streams = app.get("$apiUrl/wefeed-h5-bff/web/subject/play?subjectId=${media.id}&se=${media.season ?: 0}&ep=${media.episode ?: 0}",
-				referer = referer
+				referer = referer,
+				headers = cfHeaders
 			).parsedSafe<Media>()?.data?.streams
 
 			if (!streams.isNullOrEmpty()) {
@@ -142,7 +151,8 @@ class Sflix : MainAPI() {
 				val format = streams.first().format
 
 				app.get("$apiUrl/wefeed-h5-bff/web/subject/caption?format=$format&id=$id&subjectId=${media.id}",
-					referer = referer
+					referer = referer,
+					headers = cfHeaders
 				).parsedSafe<Media>()?.data?.captions?.forEach { sub ->
 					subtitleCallback(
 						SubtitleFile(sub.lanName ?: "", sub.url ?: return@forEach)
