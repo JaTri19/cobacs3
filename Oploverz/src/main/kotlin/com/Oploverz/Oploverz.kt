@@ -5,6 +5,7 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addAniListId
 import com.lagradost.cloudstream3.LoadResponse.Companion.addMalId
 import com.lagradost.cloudstream3.utils.*
+import kotlinx.coroutines.runBlocking
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -141,35 +142,27 @@ class Oploverz : MainAPI() {
             val quality = getQuality(selector.select("div.w-20 > p").text().trim())
 
             selector.select("div.flex.flex-row.flex-wrap > a").amap { server ->
-                loadFixedExtractor(server.attr("href"), quality, null, subtitleCallback, callback)
+                loadExtractor(server.attr("href"), null, subtitleCallback) { link ->
+                    runBlocking {
+                        callback.invoke(
+                            newExtractorLink(
+                                link.name,
+                                link.name,
+                                link.url,
+                                link.type
+                            ) {
+                                this.referer = link.referer
+                                this.quality = quality ?: Qualities.Unknown.value
+                                this.headers = link.headers
+                                this.extractorData = link.extractorData
+                            }
+                        )
+                    }
+                }
             }
         }
 
         return true
-    }
-
-    private suspend fun loadFixedExtractor(
-        url: String,
-        quality: Int?,
-        referer: String? = null,
-        subtitleCallback: (SubtitleFile) -> Unit,
-        callback: (ExtractorLink) -> Unit
-    ) {
-        loadExtractor(url, referer, subtitleCallback) { link ->
-            callback.invoke(
-                newExtractorLink(
-                    link.name,
-                    link.name,
-                    link.url,
-                    link.type
-                ) {
-                    this.referer = link.referer
-                    this.quality = quality ?: Qualities.Unknown.value
-                    this.headers = link.headers
-                    this.extractorData = link.extractorData
-                }
-            )
-        }
     }
 
     private fun getQuality(quality: String): Int {

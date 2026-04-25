@@ -123,7 +123,7 @@ class Sflix : MainAPI() {
 		subtitleCallback: (SubtitleFile) -> Unit,
 		callback: (ExtractorLink) -> Unit
 	): Boolean {
-		val media = parseJson<LoadData>(data)
+		val media = AppUtils.parseJson<LoadData>(data)
 
 		try {
 			val referer = "$apiUrl/spa/videoPlayPage/movies/${media.detailPath}?id=${media.id}&type=/movie/detail&lang=en"

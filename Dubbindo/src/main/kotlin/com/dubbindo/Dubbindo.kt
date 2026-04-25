@@ -104,11 +104,8 @@ class Dubbindo : MainAPI() {
             callback: (ExtractorLink) -> Unit
     ): Boolean {
 
-        tryParseJson<List<Video>>(data)?.map { video ->
-            if (video.type == "video/mp4" ||
-                            video.type == "video/x-msvideo" ||
-                            video.type == "video/x-matroska"
-            ) {               
+        val videos = try { AppUtils.parseJson<List<Video>>(data) } catch (e: Exception) { null }
+        videos?.map { video ->               
                 callback.invoke(
 						newExtractorLink(
 							this.name,
