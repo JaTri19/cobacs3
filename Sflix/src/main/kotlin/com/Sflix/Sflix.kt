@@ -155,7 +155,7 @@ class Sflix : MainAPI() {
 					headers = cfHeaders
 				).parsedSafe<Media>()?.data?.captions?.forEach { sub ->
 					subtitleCallback(
-						SubtitleFile(sub.lanName ?: "", sub.url ?: return@forEach)
+						newSubtitleFile(sub.lanName ?: "", sub.url ?: return@forEach)
 					)
 				}
 
