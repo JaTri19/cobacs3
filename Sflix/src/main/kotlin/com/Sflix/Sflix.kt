@@ -6,6 +6,7 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.LoadResponse.Companion.addScore
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.utils.AppUtils
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.lagradost.nicehttp.RequestBodyTypes
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -18,6 +19,7 @@ class Sflix : MainAPI() {
     override val hasMainPage = true
     override val hasQuickSearch = true
     override var lang = "id"
+    private val mapper = jacksonObjectMapper()
     override val supportedTypes = setOf(TvType.Movie, TvType.TvSeries, TvType.Anime, TvType.AsianDrama)
 
     private val cfHeaders = mapOf(
@@ -59,7 +61,7 @@ class Sflix : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val body = AppUtils.mapper.writeValueAsString(mapOf("keyword" to query, "page" to "1", "perPage" to "0", "subjectType" to "0"))
+        val body = mapper.writeValueAsString(mapOf("keyword" to query, "page" to "1", "perPage" to "0", "subjectType" to "0"))
             .toRequestBody(RequestBodyTypes.JSON.toMediaTypeOrNull())
         return app.post("$mainUrl/wefeed-h5-bff/web/subject/search", requestBody = body, headers = cfHeaders)
             .parsedSafe<Media>()?.data?.items?.map { it.toSearchResponse(this) } ?: throw ErrorLoadingException()
@@ -103,7 +105,7 @@ class Sflix : MainAPI() {
                 addTrailer(trailer, addRaw = true)
             }
         } else {
-            newMovieLoadResponse(title, url, TvType.Movie, AppUtils.mapper.writeValueAsString(LoadData(id, detailPath = subject?.detailPath))) {
+            newMovieLoadResponse(title, url, TvType.Movie, mapper.writeValueAsString(LoadData(id, detailPath = subject?.detailPath))) {
                 this.posterUrl = poster
                 this.year = year
                 this.plot = description
@@ -122,7 +124,7 @@ class Sflix : MainAPI() {
 		subtitleCallback: (SubtitleFile) -> Unit,
 		callback: (ExtractorLink) -> Unit
 	): Boolean {
-		val media = AppUtils.mapper.readValue(data, LoadData::class.java)
+		val media = mapper.readValue(data, LoadData::class.java)
 
 		try {
 			val referer = "$apiUrl/spa/videoPlayPage/movies/${media.detailPath}?id=${media.id}&type=/movie/detail&lang=en"
