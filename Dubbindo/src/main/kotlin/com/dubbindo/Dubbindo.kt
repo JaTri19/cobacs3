@@ -106,7 +106,11 @@ class Dubbindo : MainAPI() {
     ): Boolean {
 
         val videos = try { mapper.readValue(data, Array<Video>::class.java).toList() } catch (e: Exception) { null }
-        videos?.map { video ->               
+        videos?.forEach { video ->               
+            if (video.type == "video/mp4" ||
+                            video.type == "video/x-msvideo" ||
+                            video.type == "video/x-matroska"
+            ) {               
                 callback.invoke(
 						newExtractorLink(
 							this.name,
@@ -117,7 +121,7 @@ class Dubbindo : MainAPI() {
 						}
 					)
             } else {
-                loadExtractor(video.src ?: return@map, "", subtitleCallback, callback)
+                loadExtractor(video.src ?: return@forEach, "", subtitleCallback, callback)
             }
         }
 

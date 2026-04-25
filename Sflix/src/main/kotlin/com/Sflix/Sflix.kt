@@ -88,10 +88,9 @@ class Sflix : MainAPI() {
         return if (tvType == TvType.TvSeries) {
             val episodes = doc?.resource?.seasons?.map { seasons ->
                 (if (seasons.allEp.isNullOrEmpty()) (1..seasons.maxEp!!) else seasons.allEp.split(",").map { it.toInt() })
-                    .map { episode -> newEpisode(AppUtils.mapper.writeValueAsString(LoadData(id, seasons.se, episode, subject?.detailPath))) {
+                    .map { episode -> newEpisode(mapper.writeValueAsString(LoadData(id, seasons.se, episode, subject?.detailPath))) {
                         this.season = seasons.se
                         this.episode = episode
-						this.posterUrl = poster
                     }}
             }?.flatten() ?: emptyList()
             newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
