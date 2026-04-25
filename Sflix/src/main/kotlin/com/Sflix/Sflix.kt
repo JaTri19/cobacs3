@@ -5,8 +5,7 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.LoadResponse.Companion.addScore
 import com.lagradost.cloudstream3.utils.*
-import com.lagradost.cloudstream3.utils.AppUtils.parseJson
-import com.lagradost.cloudstream3.utils.AppUtils.toJson
+import com.lagradost.cloudstream3.utils.AppUtils
 import com.lagradost.nicehttp.RequestBodyTypes
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -60,8 +59,8 @@ class Sflix : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val body = mapOf("keyword" to query, "page" to "1", "perPage" to "0", "subjectType" to "0")
-            .toJson().toRequestBody(RequestBodyTypes.JSON.toMediaTypeOrNull())
+        val body = AppUtils.mapper.writeValueAsString(mapOf("keyword" to query, "page" to "1", "perPage" to "0", "subjectType" to "0"))
+            .toRequestBody(RequestBodyTypes.JSON.toMediaTypeOrNull())
         return app.post("$mainUrl/wefeed-h5-bff/web/subject/search", requestBody = body, headers = cfHeaders)
             .parsedSafe<Media>()?.data?.items?.map { it.toSearchResponse(this) } ?: throw ErrorLoadingException()
     }
@@ -87,7 +86,7 @@ class Sflix : MainAPI() {
         return if (tvType == TvType.TvSeries) {
             val episodes = doc?.resource?.seasons?.map { seasons ->
                 (if (seasons.allEp.isNullOrEmpty()) (1..seasons.maxEp!!) else seasons.allEp.split(",").map { it.toInt() })
-                    .map { episode -> newEpisode(LoadData(id, seasons.se, episode, subject?.detailPath).toJson()) {
+                    .map { episode -> newEpisode(AppUtils.mapper.writeValueAsString(LoadData(id, seasons.se, episode, subject?.detailPath))) {
                         this.season = seasons.se
                         this.episode = episode
 						this.posterUrl = poster
@@ -104,7 +103,7 @@ class Sflix : MainAPI() {
                 addTrailer(trailer, addRaw = true)
             }
         } else {
-            newMovieLoadResponse(title, url, TvType.Movie, LoadData(id, detailPath = subject?.detailPath).toJson()) {
+            newMovieLoadResponse(title, url, TvType.Movie, AppUtils.mapper.writeValueAsString(LoadData(id, detailPath = subject?.detailPath))) {
                 this.posterUrl = poster
                 this.year = year
                 this.plot = description
@@ -123,7 +122,7 @@ class Sflix : MainAPI() {
 		subtitleCallback: (SubtitleFile) -> Unit,
 		callback: (ExtractorLink) -> Unit
 	): Boolean {
-		val media = AppUtils.parseJson<LoadData>(data)
+		val media = AppUtils.mapper.readValue(data, LoadData::class.java)
 
 		try {
 			val referer = "$apiUrl/spa/videoPlayPage/movies/${media.detailPath}?id=${media.id}&type=/movie/detail&lang=en"

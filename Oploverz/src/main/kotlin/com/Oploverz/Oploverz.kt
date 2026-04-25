@@ -152,7 +152,7 @@ class Oploverz : MainAPI() {
                                 link.type
                             ) {
                                 this.referer = link.referer
-                                this.quality = quality ?: Qualities.Unknown.value
+                                this.quality = quality
                                 this.headers = link.headers
                                 this.extractorData = link.extractorData
                             }

@@ -1,8 +1,7 @@
 package com.dubbindo
 
 import com.lagradost.cloudstream3.*
-import com.lagradost.cloudstream3.utils.AppUtils.toJson
-import com.lagradost.cloudstream3.utils.AppUtils.tryParseJson
+import com.lagradost.cloudstream3.utils.AppUtils
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.newExtractorLink
 import com.lagradost.cloudstream3.utils.Qualities
@@ -89,7 +88,7 @@ class Dubbindo : MainAPI() {
                     )
                 }
 
-        return newMovieLoadResponse(title, url, TvType.Movie, video.toJson()) {
+        return newMovieLoadResponse(title, url, TvType.Movie, AppUtils.mapper.writeValueAsString(video)) {
             posterUrl = poster
             plot = description
             this.tags = tags
@@ -104,7 +103,7 @@ class Dubbindo : MainAPI() {
             callback: (ExtractorLink) -> Unit
     ): Boolean {
 
-        val videos = try { AppUtils.parseJson<List<Video>>(data) } catch (e: Exception) { null }
+        val videos = try { AppUtils.mapper.readValue(data, Array<Video>::class.java).toList() } catch (e: Exception) { null }
         videos?.map { video ->               
                 callback.invoke(
 						newExtractorLink(
